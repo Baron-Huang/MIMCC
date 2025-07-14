@@ -10,7 +10,7 @@
 
 Here's an overview of our **Manifold-constrained Adaptive Clustering (MacNet)** method:
 
-![Figure 1](./images/MacNet_main.jpg)
+![Figure 1](./images/MacNet_main.png)
 
 
 
