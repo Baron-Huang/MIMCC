@@ -1,14 +1,14 @@
-# An End-to-end Knowledge-driven Multi-instance Learning Network with Hierarchical Cluster-incorporated Aware Filtering for Larynx Pathological Grading 
+# MacNet: An End-to-End Manifold-Constrained Adaptive Clustering Network for Interpretable Whole Slide Image Classification 
 
 ## :fire: News
 
-- [2025/04/25] Our manuscript was currently Under Review  _IEEE Journal of Biomedical and Health Informatics_.
+- [2025/04/25] Our manuscript was currently submitted to _IEEE International Conference on Bioinformatics and Biomedicine (BIBM)_.
 
 
 
 ## :rocket: Pipeline
 
-Here's an overview of our **Hierarchical Cluster-incorporated Aware Filtering (HCF-MIL)** method:
+Here's an overview of our **Manifold-constrained Adaptive Clustering (MacNet)** method:
 
 ![Figure 1](./images/main.jpg)
 
@@ -17,54 +17,12 @@ Here's an overview of our **Hierarchical Cluster-incorporated Aware Filtering (H
 ## :mag: TODO
 <font color="red">**We are currently organizing all the code. Stay tuned!**</font>
 - [x] training code
-- [x] Evaluation code
+- [x] Evaluation and Visualization code
 - [x] Model code
 - [ ] Pretrained weights
-- [ ] Datasets
 
 
-
-
-
-## 🛠️ Getting Started
-
-To get started with NCFM, follow the installation instructions below.
-
-1.  Clone the repo
-
-```sh
-git clone https://github.com/Prince-Lee-PathAI/HCF-MIL
-```
-
-2. Install dependencies
-   
-```sh
-pip install -r requirements.txt
-```
-
-3. Training on Swin Transformer-S Backbone
-```sh
-sh run_swinT.sh
-Modify: --abla_type sota --run_mode train --random_seed ${seed}
-```
-
-4. Evaluation
-```sh
-sh run_swinT.sh
-Modify: --abla_type sota --run_mode test --random_seed ${seed}
-```
-
-5. Extract features for plots
-```sh
-sh run_swinT.sh
-Modify: --abla_type sota --run_mode test --random_seed ${seed} --feat_extract
-```
-
-6. Interpretability plots
-```sh
-sh run_swinT.sh
-Modify: --abla_type sota --run_mode test --random_seed ${seed} --bag_weight
-```
 
 ## :postbox: Contact
+ _Datasets will be available if requested_.
 If you have any questions, please contact [Chentao Li](https://prince-lee-pathai.github.io/) (`cl4691@columbia.edu`).
