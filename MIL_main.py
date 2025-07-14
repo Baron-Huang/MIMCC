@@ -6,7 +6,7 @@ import os
 from pytorch_lightning import seed_everything
 import random
 from SwinT_models.flash_models.swin_transformer import SwinTransformer
-from SwinT_models.models.Simple_MIL_model_modules import (MIL_Parallel_Feature, MIL_Parallel_Head)
+from Simple_MIL_model_modules import (MIL_Parallel_Feature, MIL_Parallel_Head)
 from Utils.train_val import testing_for_parallel, training_for_parallel
 from Visual_functions.cluster_vis import Cluster_vis
 from Visual_functions.anova_vis import extracting_feat
