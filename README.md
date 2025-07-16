@@ -22,8 +22,3 @@ Here's some exciting experimental results of both active interpretbility and pas
 - [x] Evaluation and Visualization code
 - [x] Model code
 - [ ] Pretrained weights
-
-
-
-## :postbox: Contact
- Datasets will be available at [LSCC](https://drive.google.com/file/d/1375q7WRDXUCJf5UnO4dWcmcQFpEMwhEO/view?usp=sharing) and [CSCC](https://drive.google.com/file/d/1l820bSmfZgQYP1zXfS4Tu9oG8Ep6WnCP/view?usp=sharing).
