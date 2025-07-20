@@ -2,7 +2,7 @@
 
 ## :fire: News
 
-- [2025/07/15] Our manuscript was currently submitted to _IEEE International Conference on Bioinformatics and Biomedicine (BIBM)_.
+- [2025/07/15] Our manuscript was currently submitted to _AAAI (2026)_.
 
 
 
