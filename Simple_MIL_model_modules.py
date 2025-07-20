@@ -429,13 +429,8 @@ class MIL_Parallel_Head_ub(nn.Module):
         self.tgi_clustering_block_Vanilla = TgiClustering(k_nums=3, sel_dis='l2')
         # self.tgi_clustering_block = Sef_Cluster(k_nums=3, sel_dis='liad',feature_lens=20)
         self.tgi_clustering_block = Sef_Cluster(k_nums=3, sel_dis='liad')
-
-
-
+	    
     def forward(self, x):
-
-        if self.abla_type == 'sota':
-            # clustering guiding
             y = x.unsqueeze(dim=0)
             if self.bag_weight:
                 bag_w = y[:]
@@ -508,127 +503,5 @@ class MIL_Parallel_Head_ub(nn.Module):
             if self.feat_extract:
                 return final_y
             else:
-                return y_logits, min_dis, max_dis # SOTA:tic+attn
-            # return y1, min_dis, non_min_dis   # tic: del max and only mean agg
-        elif self.abla_type == 'tic_mani':
-            # clustering guiding
-            y = x.unsqueeze(dim=0)
-            if self.bag_weight:
-                bag_w = torch.mean(y, dim=2, keepdim=True)
-                return bag_w
-            min_dis = torch.zeros((1)).cuda()
-            max_dis = torch.zeros((1)).cuda()
-            for i in range(y.shape[0]): 
-                y_s = y[i][:-5, :]
-                y_t = y[i][-5:, :]
-                with torch.no_grad():
-                    pca_model = PCA(n_components=20)
-                    unlabelled_y = pca_model.fit_transform(y_s)
-                    target_guiding_y = pca_model.transform(y_t)
-
-                if unlabelled_y.shape[0] < 20:
-                    final_y = torch.mean(y, dim=1, keepdim=True)
-                    final_y = torch.reshape(final_y, (final_y.shape[0], final_y.shape[2]))
-                    y_logits = self.head(final_y)
-                    return y_logits, min_dis, max_dis
-                
-                assigned_sets = self.tgi_clustering_block.forward(unlabelled_y)
-                assign_y_0 = unlabelled_y[assigned_sets['0'], :]
-                assign_y_1 = unlabelled_y[assigned_sets['1'], :]
-                assign_y_2 = unlabelled_y[assigned_sets['2'], :]
-
-                if assign_y_0.shape == (0, 20) or assign_y_1.shape == (0, 20) or assign_y_2.shape == (0, 20):
-                    dis_0_tar = torch.tensor(0).cuda(0)
-                    dis_1_tar = torch.tensor(0).cuda(0)
-                    dis_2_tar = torch.tensor(0).cuda(0)
-                else:
-                    dis_0_tar = self.tgi_clustering_block.instance_adaptive_distance(
-                        torch.mean(target_guiding_y, dim=0, keepdim=True).permute(1, 0),
-                        torch.mean(assign_y_0, dim=0, keepdim=True).permute(1, 0))
-                    dis_1_tar = self.tgi_clustering_block.instance_adaptive_distance(
-                        torch.mean(target_guiding_y, dim=0, keepdim=True).permute(1, 0),
-                        torch.mean(assign_y_1, dim=0, keepdim=True).permute(1, 0))
-                    dis_2_tar = self.tgi_clustering_block.instance_adaptive_distance(
-                        torch.mean(target_guiding_y, dim=0, keepdim=True).permute(1, 0),
-                        torch.mean(assign_y_2, dim=0, keepdim=True).permute(1, 0))
-
-                if (dis_0_tar == torch.tensor(0).cuda(0)) or (dis_1_tar == torch.tensor(0).cuda(0)) or (
-                        dis_2_tar == torch.tensor(0).cuda(0)):
-                    dis_0_rate = torch.tensor(0).cuda(0)
-                    dis_1_rate = torch.tensor(0).cuda(0)
-                    dis_2_rate = torch.tensor(0).cuda(0)
-                else:
-                    dis_0_rate = (dis_0_tar / (dis_0_tar + dis_1_tar + dis_2_tar)) * 0.1
-                    dis_1_rate = (dis_1_tar / (dis_0_tar + dis_1_tar + dis_2_tar)) * 0.1
-                    dis_2_rate = (dis_2_tar / (dis_0_tar + dis_1_tar + dis_2_tar)) * 0.1
-
-                y[i][:-5, :][assigned_sets['0'], :] = (1 - dis_0_rate) * y[i][:-5, :][assigned_sets['0'], :]
-                y[i][:-5, :][assigned_sets['1'], :] = (1 - dis_1_rate) * y[i][:-5, :][assigned_sets['1'], :]
-                y[i][:-5, :][assigned_sets['2'], :] = (1 - dis_2_rate) * y[i][:-5, :][assigned_sets['2'], :]
-            final_y = torch.mean(y, dim=1, keepdim=True)
-            final_y = torch.reshape(final_y, (final_y.shape[0], final_y.shape[2]))
-            y_logits = self.head(final_y)
-            if self.feat_extract:
-                return final_y
-            else:
-                return y_logits, min_dis, max_dis  # SOTA:tic+attn
-        elif self.abla_type == 'tic':
-            # clustering guiding
-            y = x.unsqueeze(dim=0)
-            if self.bag_weight:
-                bag_w = torch.mean(y, dim=2, keepdim=True)
-                return bag_w
-            min_dis = torch.zeros((1)).cuda()
-            max_dis = torch.zeros((1)).cuda()
-            for i in range(y.shape[0]):
-                
-                unlabelled_y = y[i][:-5, :]
-                target_guiding_y = y[i][-5:, :]
-
-                assigned_sets = self.tgi_clustering_block_Vanilla.forward(unlabelled_y)
-                assign_y_0 = unlabelled_y[assigned_sets['0'], :]
-                assign_y_1 = unlabelled_y[assigned_sets['1'], :]
-                assign_y_2 = unlabelled_y[assigned_sets['2'], :]
-
-                if assign_y_0.shape == (0, 768) or assign_y_1.shape == (0, 768) or assign_y_2.shape == (0, 768):
-                    dis_0_tar = torch.tensor(0).cuda(0)
-                    dis_1_tar = torch.tensor(0).cuda(0)
-                    dis_2_tar = torch.tensor(0).cuda(0)
-                else:
-                    dis_0_tar = self.tgi_clustering_block_Vanilla.l2_distance(
-                        torch.mean(target_guiding_y, dim=0, keepdim=True).permute(1, 0),
-                        torch.mean(assign_y_0, dim=0, keepdim=True).permute(1, 0))
-                    dis_1_tar = self.tgi_clustering_block_Vanilla.l2_distance(
-                        torch.mean(target_guiding_y, dim=0, keepdim=True).permute(1, 0),
-                        torch.mean(assign_y_1, dim=0, keepdim=True).permute(1, 0))
-                    dis_2_tar = self.tgi_clustering_block_Vanilla.l2_distance(
-                        torch.mean(target_guiding_y, dim=0, keepdim=True).permute(1, 0),
-                        torch.mean(assign_y_2, dim=0, keepdim=True).permute(1, 0))
-
-                if (dis_0_tar == torch.tensor(0).cuda(0)) or (dis_1_tar == torch.tensor(0).cuda(0)) or (
-                        dis_2_tar == torch.tensor(0).cuda(0)):
-                    dis_0_rate = torch.tensor(0).cuda(0)
-                    dis_1_rate = torch.tensor(0).cuda(0)
-                    dis_2_rate = torch.tensor(0).cuda(0)
-                else:
-                    dis_0_rate = (dis_0_tar / (dis_0_tar + dis_1_tar + dis_2_tar)) * 0.1
-                    dis_1_rate = (dis_1_tar / (dis_0_tar + dis_1_tar + dis_2_tar)) * 0.1
-                    dis_2_rate = (dis_2_tar / (dis_0_tar + dis_1_tar + dis_2_tar)) * 0.1
-
-                y[i][:-5, :][assigned_sets['0'], :] = (1 - dis_0_rate) * y[i][:-5, :][assigned_sets['0'], :]
-                y[i][:-5, :][assigned_sets['1'], :] = (1 - dis_1_rate) * y[i][:-5, :][assigned_sets['1'], :]
-                y[i][:-5, :][assigned_sets['2'], :] = (1 - dis_2_rate) * y[i][:-5, :][assigned_sets['2'], :]
-            final_y = torch.mean(y, dim=1, keepdim=True)
-            final_y = torch.reshape(final_y, (final_y.shape[0], final_y.shape[2]))
-            y_logits = self.head(final_y)
-            if self.feat_extract:
-                return final_y
-            else:
-                return y_logits, min_dis, max_dis  # SOTA:tic+attn
-        else:
-            y = x[:-5,:] # unbalanced batch
-            y = torch.mean(y, dim=0, keepdim=True)  # unbalanced batch
-            y = self.head(y)
-            return y
-
+                return y_logits, min_dis, max_dis
 
