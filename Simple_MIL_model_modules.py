@@ -1,7 +1,5 @@
 
 import time
-
-from SwinT_models.models.swin_transformer import SwinTransformer
 from Utils.GFK_torch import GFK
 from torch import nn
 import torch
