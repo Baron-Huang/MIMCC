@@ -1,10 +1,3 @@
-############################# reading Multiple instance learing datasets for tensor training ##############################
-#### Author: Dr.Pan Huang
-#### Email: panhuang@cqu.edu.cn
-#### Department: COE, Chongqing University
-#### Attempt: read MIL file datasets (including instances and bags).
-
-########################## API Section #########################
 import natsort
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
@@ -85,24 +78,3 @@ class Read_MIL_Datasets(Dataset):
 
     def __len__(self):
         return len(self.bags_img_path)
-
-
-########################## demo testing main #########################
-if __name__ == '__main__':
-    #setup_seed(0)
-    read_path = r'/Datasets/Cervix/Cervix_MIL_961/Train'
-    read_mil_obj = Read_MIL_Datasets(read_path=read_path)
-
-    mil_train_loader = DataLoader(dataset=read_mil_obj, batch_size=1, shuffle=False, worker_init_fn=1)
-    for batch_ord, (i, j) in enumerate(mil_train_loader):
-        if batch_ord >= 0:
-            break
-        print(batch_ord)
-    test_img = i[15, 28, :, :, :].permute(1, 2, 0)
-    test_img = test_img.numpy()
-
-    plt.figure()
-    plt.imshow(test_img)
-    plt.show()
-
-    pass
