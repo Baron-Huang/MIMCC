@@ -3,12 +3,10 @@ from PIL import Image
 
 import numpy as np
 
-# 设置路径
 base_dir = 'path_to_LSCC_or_CSCC_pathces'
 save_dir = 'save_dir'
 os.makedirs(save_dir, exist_ok=True)
 
-# 图像参数
 grid_size = 31
 tile_size = 96
 white_tile = Image.new('RGB', (tile_size, tile_size), (255, 255, 255))
