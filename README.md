@@ -2,7 +2,7 @@
 
 ## :fire: News
 
-- [2025/07/15] Our manuscript was currently submitted to _AAAI (2026)_.
+- To be continued.
 
 
 
