@@ -1,8 +1,10 @@
 # MacNet: An End-to-End Manifold-Constrained Adaptive Clustering Network for Interpretable Whole Slide Image Classification 
 
-## :fire: News
+## 🤹: Authors (*Corresponding author, #co-first author)
+- Mingrui Ma#, Chentao Li, _Student Member_, _IEEE_, Pan Huang*, _Member_, _IEEE_, Jing Qin, _Senior Member_, _IEEE_,
 
-- To be continued.
+## :fire: News
+- [2025/09/24] Our manuscript was submitted to _IEEE Transactions on Medical Imaging (IF 9.8)_.
 
 
 
