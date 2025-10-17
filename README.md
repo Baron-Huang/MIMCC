@@ -1,7 +1,7 @@
 # Multi-instance Mamba Causal Clustering for Pathological Whole-slide Image Classification
 
 ## 🤹 Authors [*Corresponding author]
-- Pan Huang*, _Member_, _IEEE_, Jing Qin, _Senior Member_, _IEEE_,
+- Pan Huang, _Member_, _IEEE_, Jing Qin*, _Senior Member_, _IEEE_
 
 ## :fire: News
 - [2025/09/24] Our manuscript was submitted to _IEEE Transactions on Medical Imaging (IF 9.8)_.
