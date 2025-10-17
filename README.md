@@ -1,4 +1,4 @@
-# MacNet: An End-to-End Manifold-Constrained Adaptive Clustering Network for Interpretable Whole Slide Image Classification 
+# Multi-instance Mamba Causal Clustering for Pathological Whole-slide Image Classification
 
 ## 🤹 Authors [*Corresponding author, #co-first author]
 - Mingrui Ma#, Chentao Li#, _Student Member_, _IEEE_, Pan Huang*, _Member_, _IEEE_, Jing Qin, _Senior Member_, _IEEE_,
